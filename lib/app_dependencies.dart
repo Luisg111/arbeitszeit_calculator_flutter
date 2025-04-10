@@ -1,7 +1,8 @@
-import 'package:arbeitszeit_calculator_flutter/shift/data/database.dart';
-import 'package:arbeitszeit_calculator_flutter/shift/domain/repository/shift_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'feature/shift/data/database.dart';
+import 'feature/shift/domain/repository/shift_repository.dart';
 
 class AppDependencies extends StatelessWidget {
   const AppDependencies({super.key, required this.app});
