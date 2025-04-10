@@ -2,9 +2,9 @@ import 'package:arbeitszeit_calculator_flutter/navigation/basic_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
-import '../feature/shift/presentation/shiftDetails/shiftDetailsScreen.dart';
-import '../feature/shift/presentation/shiftIcalImport/shiftIcalImportScreen.dart';
-import '../feature/shift/presentation/shiftList/view/shift_list_screen.dart';
+import '../feature/shift/presentation/shift_details/view/shift_details_screen.dart';
+import '../feature/shift/presentation/shift_ical_import/view/shift_ical_import_screen.dart';
+import '../feature/shift/presentation/shift_list/view/shift_list_screen.dart';
 
 
 part "app_navigation.g.dart";
