@@ -42,6 +42,9 @@ dependencies:
   copy_with_extension_gen: ^6.0.1
   equatable: ^2.0.7
   go_router_builder: ^2.8.2
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
 dev_dependencies:
   flutter_test:

@@ -19,10 +19,12 @@ class DateSelector extends StatefulWidget {
   State<DateSelector> createState() => _DateSelectorState();
 }
 
+//TODO: add error message
 class _DateSelectorState extends State<DateSelector> {
   late final TextEditingController _textController = TextEditingController(
     text: widget.initialValue?.toString(),
   );
+  final _focusNode = FocusNode();
 
   @override
   void initState() {
@@ -34,24 +36,31 @@ class _DateSelectorState extends State<DateSelector> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return SizedBox(
       width: 150,
       height: 150,
-      child: Card(
-        color: Colors.grey,
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.all(24),
-            child: TextFormField(
-              controller: _textController,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-              ],
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                helperText: widget.inputHelper,
-                errorText: widget.isEntryValid ? null : "Invalide Eingabe",
+      child: Material(
+        borderRadius: BorderRadius.circular(20),
+        color: theme.colorScheme.secondary,
+        child: InkWell(
+          onTap: () => _focusNode.requestFocus(),
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child: EditableText(
+                focusNode: _focusNode,
+                controller: _textController,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                ],
+                keyboardType: TextInputType.number,
+                style: theme.textTheme.headlineMedium!.copyWith(
+                  color: theme.colorScheme.onSecondary,
+                  fontWeight: FontWeight.bold,
+                ),
+                cursorColor: theme.colorScheme.onSecondary,
+                backgroundCursorColor: theme.colorScheme.secondary,
               ),
             ),
           ),
@@ -63,6 +72,7 @@ class _DateSelectorState extends State<DateSelector> {
   @override
   void dispose() {
     _textController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 }

@@ -1,10 +1,13 @@
+import 'package:arbeitszeit_calculator_flutter/feature/shift/domain/repository/shift_repository.dart';
 import 'package:bloc/bloc.dart';
 
 import 'shift_list_event.dart';
 import 'shift_list_state.dart';
 
 class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
-  ShiftListBloc() : super(ShiftListState.empty()) {
+  final ShiftRepository _repository;
+
+  ShiftListBloc(this._repository) : super(ShiftListState.empty()) {
     on<ShiftListEvent>((event, emit) {
       switch (event) {
         case ShiftListInitialized _:
@@ -17,7 +20,18 @@ class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
     });
   }
 
-  Future<void> _initialize(Emitter<ShiftListState> emit) async {}
+  Future<void> _initialize(Emitter<ShiftListState> emit) async {
+    _loadData(emit);
+  }
+
+  Future<void> _loadData(Emitter<ShiftListState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    try {
+      var shifts = await _repository.getShifts();
+      emit(state.copyWith(shifts: shifts));
+    } catch (e) {}
+    emit(state.copyWith(isLoading: false));
+  }
 
   void _selectedYearChanged(
     ShiftListSelectedYearChanged event,
@@ -42,7 +56,6 @@ class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
     } else {
       emit(state.copyWith(selectedMonthValid: false));
       print("month changed! invalid");
-
     }
   }
 }

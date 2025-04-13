@@ -1,6 +1,8 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../domain/model/shift.dart';
+
 part 'shift_list_state.g.dart';
 
 @CopyWith()
@@ -12,12 +14,15 @@ class ShiftListState extends Equatable {
   final bool selectedYearValid;
   final bool selectedMonthValid;
 
+  final List<Shift> shifts;
+
   const ShiftListState({
     this.isLoading = false,
     required this.selectedMonthValid,
     required this.selectedYearValid,
     required this.selectedYear,
     required this.selectedMonth,
+    required this.shifts,
   });
 
   factory ShiftListState.empty() {
@@ -27,6 +32,7 @@ class ShiftListState extends Equatable {
       selectedMonth: currentDate.month,
       selectedMonthValid: true,
       selectedYearValid: true,
+      shifts: [],
     );
   }
 
@@ -41,5 +47,6 @@ class ShiftListState extends Equatable {
     selectedMonthValid,
 
     selectedYearValid,
+    shifts,
   ];
 }
