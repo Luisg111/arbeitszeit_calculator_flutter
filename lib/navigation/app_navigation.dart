@@ -1,4 +1,4 @@
-import 'package:arbeitszeit_calculator_flutter/navigation/basic_page.dart';
+import 'package:arbeitszeit_calculator_flutter/widgets/basic_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 

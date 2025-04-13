@@ -1,6 +1,13 @@
 # arbeitszeit_calculator_flutter
 
-A new Flutter project.
+App zur Arbeitszeiterfassung, implementiert mit Flutter
+
+## Funktionen
+
+- Schichten anlegen und verwalten
+- Zusammenfassung aktueller Monat
+- Import / Export von und zu JSON
+- Import von Schichten aus iCal-Dateien
 
 ## Getting Started
 

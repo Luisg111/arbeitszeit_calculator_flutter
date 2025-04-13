@@ -6,11 +6,17 @@ part "shift.g.dart";
 @CopyWith()
 class Shift extends Equatable {
   final int id;
+  final Duration breakTime;
   final DateTime startDate;
   final DateTime endDate;
 
-  Shift({required this.id, required this.startDate, required this.endDate});
+  const Shift({
+    required this.id,
+    required this.startDate,
+    required this.endDate,
+    required this.breakTime,
+  });
 
   @override
-  List<Object?> get props => [id, startDate, endDate];
+  List<Object?> get props => [id, startDate, endDate, breakTime];
 }
