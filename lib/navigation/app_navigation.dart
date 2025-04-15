@@ -6,7 +6,6 @@ import '../feature/shift/presentation/shift_details/view/shift_details_screen.da
 import '../feature/shift/presentation/shift_ical_import/view/shift_ical_import_screen.dart';
 import '../feature/shift/presentation/shift_list/view/shift_list_screen.dart';
 
-
 part "app_navigation.g.dart";
 
 @TypedGoRoute<HomeRoute>(path: '/')
@@ -71,5 +70,5 @@ class ShiftDetailsRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      ShiftDetailsScreen(id: id);
+      ShiftDetailsScreen(shiftId: id);
 }

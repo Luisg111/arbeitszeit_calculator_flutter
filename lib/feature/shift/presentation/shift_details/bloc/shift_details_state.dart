@@ -6,9 +6,42 @@ part 'shift_details_state.g.dart';
 @CopyWith()
 class ShiftDetailsState extends Equatable {
   final bool isLoading;
+  final bool closeScreen;
+  final int? shiftId;
+  final Duration breakDuration;
+  final DateTime startDateTime;
+  final DateTime endDateTime;
 
-  ShiftDetailsState({this.isLoading = false});
+  bool get isCreatingNewShift => shiftId == null;
+
+  const ShiftDetailsState(
+    this.isLoading,
+    this.shiftId,
+    this.breakDuration,
+    this.startDateTime,
+    this.endDateTime,
+    this.closeScreen,
+  );
+
+  factory ShiftDetailsState.empty() {
+    var dateTime = DateTime.now();
+    return ShiftDetailsState(
+      false,
+      null,
+      Duration(hours: 1),
+      dateTime,
+      dateTime.add(Duration(hours: 9)),
+      false,
+    );
+  }
 
   @override
-  List<Object?> get props => [isLoading];
+  List<Object?> get props => [
+    isLoading,
+    shiftId,
+    breakDuration,
+    startDateTime,
+    endDateTime,
+    closeScreen,
+  ];
 }

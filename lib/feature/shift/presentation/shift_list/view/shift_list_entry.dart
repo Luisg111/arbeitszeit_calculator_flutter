@@ -1,3 +1,4 @@
+import 'package:arbeitszeit_calculator_flutter/navigation/app_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -12,6 +13,11 @@ class ShiftListEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return ListTile(
+      onTap: () {
+        if (shift.id != null) {
+          ShiftDetailsRoute(shift.id!).go(context);
+        }
+      },
       tileColor: theme.colorScheme.primary,
       textColor: theme.colorScheme.onPrimary,
       title: Text(DateFormat.yMMMMd().format(shift.startDate)),

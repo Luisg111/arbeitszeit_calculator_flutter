@@ -1,6 +1,7 @@
 import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/bloc/shift_list_event.dart';
 import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/view/date_selector.dart';
 import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/view/shift_list_entry.dart';
+import 'package:arbeitszeit_calculator_flutter/navigation/app_navigation.dart';
 import 'package:arbeitszeit_calculator_flutter/widgets/app_bar.dart';
 
 import '../bloc/shift_list_bloc.dart';
@@ -32,6 +33,12 @@ class ShiftListView extends StatelessWidget {
     return BlocBuilder<ShiftListBloc, ShiftListState>(
       builder: (context, state) {
         return Scaffold(
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              ShiftCreateRoute().go(context);
+            },
+          ),
           appBar: CustomAppBar(title: "Schichtübersicht"),
           body: ListView(
             children: [

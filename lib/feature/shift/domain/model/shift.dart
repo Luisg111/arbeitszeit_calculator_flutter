@@ -5,7 +5,7 @@ part "shift.g.dart";
 
 @CopyWith()
 class Shift extends Equatable {
-  final int id;
+  final int? id;
   final Duration breakTime;
   final DateTime startDate;
   final DateTime endDate;

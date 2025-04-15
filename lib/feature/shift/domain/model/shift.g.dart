@@ -7,7 +7,7 @@ part of 'shift.dart';
 // **************************************************************************
 
 abstract class _$ShiftCWProxy {
-  Shift id(int id);
+  Shift id(int? id);
 
   Shift startDate(DateTime startDate);
 
@@ -22,7 +22,7 @@ abstract class _$ShiftCWProxy {
   /// Shift(...).copyWith(id: 12, name: "My name")
   /// ````
   Shift call({
-    int id,
+    int? id,
     DateTime startDate,
     DateTime endDate,
     Duration breakTime,
@@ -36,7 +36,7 @@ class _$ShiftCWProxyImpl implements _$ShiftCWProxy {
   final Shift _value;
 
   @override
-  Shift id(int id) => this(id: id);
+  Shift id(int? id) => this(id: id);
 
   @override
   Shift startDate(DateTime startDate) => this(startDate: startDate);
@@ -65,7 +65,7 @@ class _$ShiftCWProxyImpl implements _$ShiftCWProxy {
           id == const $CopyWithPlaceholder()
               ? _value.id
               // ignore: cast_nullable_to_non_nullable
-              : id as int,
+              : id as int?,
       startDate:
           startDate == const $CopyWithPlaceholder()
               ? _value.startDate
