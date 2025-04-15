@@ -19,3 +19,9 @@ class ShiftDetailsStartDateChanged extends ShiftDetailsDateChanged {
 class ShiftDetailsEndDateChanged extends ShiftDetailsDateChanged {
   ShiftDetailsEndDateChanged(super.selectedDateTime);
 }
+
+class ShiftDetailsDurationChanged extends ShiftDetailsEvent {
+  final Duration selectedDuration;
+
+  ShiftDetailsDurationChanged(this.selectedDuration);
+}

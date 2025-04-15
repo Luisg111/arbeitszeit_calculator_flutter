@@ -22,7 +22,7 @@ class ShiftListEntry extends StatelessWidget {
       textColor: theme.colorScheme.onPrimary,
       title: Text(DateFormat.yMMMMd().format(shift.startDate)),
       subtitle: Text(
-        "${DateFormat.Hm().format(shift.startDate)} - ${DateFormat.Hm().format(shift.startDate)}",
+        "${DateFormat.Hm().format(shift.startDate)} - ${DateFormat.Hm().format(shift.endDate)}",
       ),
     );
   }

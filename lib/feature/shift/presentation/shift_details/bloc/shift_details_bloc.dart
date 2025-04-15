@@ -11,16 +11,18 @@ class ShiftDetailsBloc extends Bloc<ShiftDetailsEvent, ShiftDetailsState> {
 
   ShiftDetailsBloc(this._initialId, this._repository)
     : super(ShiftDetailsState.empty()) {
-    on<ShiftDetailsEvent>((event, emit) {
+    on<ShiftDetailsEvent>((event, emit) async {
       switch (event) {
         case ShiftDetailsInitialized _:
-          _initialize(emit);
+          await _initialize(emit);
         case ShiftDetailsStoreShift _:
-          _storeShiftData(emit);
+          await _storeShiftData(emit);
         case ShiftDetailsDeleteShift _:
-          _deleteShift(emit);
+          await _deleteShift(emit);
         case ShiftDetailsDateChanged _:
           _selectedDateChanged(event, emit);
+        case ShiftDetailsDurationChanged _:
+          _selectedDurationChanged(event, emit);
       }
     });
   }
@@ -28,7 +30,7 @@ class ShiftDetailsBloc extends Bloc<ShiftDetailsEvent, ShiftDetailsState> {
   Future<void> _initialize(Emitter<ShiftDetailsState> emit) async {
     if (_initialId != null) {
       emit(state.copyWith(shiftId: _initialId));
-      _loadShiftData(emit);
+      await _loadShiftData(emit);
     }
   }
 
@@ -69,7 +71,7 @@ class ShiftDetailsBloc extends Bloc<ShiftDetailsEvent, ShiftDetailsState> {
     } catch (e) {
       //TODO: add error handling
     }
-    emit(state.copyWith(isLoading: false));
+    emit(state.copyWith(isLoading: false, closeScreen: true));
   }
 
   Future<void> _deleteShift(Emitter<ShiftDetailsState> emit) async {
@@ -97,5 +99,12 @@ class ShiftDetailsBloc extends Bloc<ShiftDetailsEvent, ShiftDetailsState> {
       case ShiftDetailsEndDateChanged _:
         emit(state.copyWith(endDateTime: event.selectedDateTime));
     }
+  }
+
+  void _selectedDurationChanged(
+    ShiftDetailsDurationChanged event,
+    Emitter<ShiftDetailsState> emit,
+  ) {
+    emit(state.copyWith(breakDuration: event.selectedDuration));
   }
 }

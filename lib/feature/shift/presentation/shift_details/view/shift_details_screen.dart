@@ -1,5 +1,6 @@
 import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/bloc/shift_details_event.dart';
 import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/view/date_time_selector.dart';
+import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/view/duration_selector.dart';
 import 'package:arbeitszeit_calculator_flutter/navigation/app_navigation.dart';
 import 'package:go_router/go_router.dart';
 
@@ -87,6 +88,20 @@ class ShiftDetailsView extends StatelessWidget {
             onDateTimeChanged: (dateTime) {
               bloc.add(ShiftDetailsEndDateChanged(dateTime));
             },
+          ),
+          SizedBox(height: 16),
+          DurationSelector(
+            selectedDuration: state.breakDuration,
+            onDurationChanged: (duration) {
+              bloc.add(ShiftDetailsDurationChanged(duration));
+            },
+          ),
+          SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () {
+              bloc.add(ShiftDetailsStoreShift());
+            },
+            child: Text("Speichern"),
           ),
         ],
       ),
