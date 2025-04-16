@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'feature/shift/presentation/error_handler.dart';
 import 'feature/shift/data/database.dart';
 import 'feature/shift/domain/repository/shift_repository.dart';
 
@@ -15,6 +16,7 @@ class AppDependencies extends StatelessWidget {
       providers: [
         Provider(create: (context) => Database()),
         Provider(create: (context) => ShiftRepository(db: context.read())),
+        Provider(create: (context) => ErrorHandler()),
       ],
       child: app,
     );

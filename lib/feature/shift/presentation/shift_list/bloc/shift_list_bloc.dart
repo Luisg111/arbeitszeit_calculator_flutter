@@ -1,3 +1,5 @@
+import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/error_handler.dart';
+import 'package:arbeitszeit_calculator_flutter/feature/shift/domain/model/result.dart';
 import 'package:arbeitszeit_calculator_flutter/feature/shift/domain/repository/shift_repository.dart';
 import 'package:bloc/bloc.dart';
 
@@ -7,8 +9,10 @@ import 'shift_list_state.dart';
 
 class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
   final ShiftRepository _repository;
+  final ErrorHandler _handler;
 
-  ShiftListBloc(this._repository) : super(ShiftListState.empty()) {
+  ShiftListBloc(this._repository, this._handler)
+    : super(ShiftListState.empty()) {
     on<ShiftListEvent>((event, emit) async {
       switch (event) {
         case ShiftListInitialized _:
@@ -29,13 +33,19 @@ class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
 
   Future<void> _loadData(Emitter<ShiftListState> emit) async {
     emit(state.copyWith(isLoading: true));
-    try {
-      var shifts = await _repository.getShifts(
-        year: state.selectedYear,
-        month: state.selectedMonth,
-      );
-      emit(state.copyWith(shifts: shifts));
-    } catch (e) {}
+
+    var databaseResponse = await _repository.getShifts(
+      year: state.selectedYear,
+      month: state.selectedMonth,
+    );
+
+    switch (databaseResponse) {
+      case Ok<List<Shift>> _:
+        emit(state.copyWith(shifts: databaseResponse.value));
+      case Failure<List<Shift>> _:
+        _handler.handle(databaseResponse.error);
+    }
+
     emit(state.copyWith(isLoading: false));
   }
 

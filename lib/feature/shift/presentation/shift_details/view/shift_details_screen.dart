@@ -1,3 +1,4 @@
+import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/error_handler.dart';
 import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/bloc/shift_details_event.dart';
 import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/view/date_time_selector.dart';
 import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/view/duration_selector.dart';
@@ -18,12 +19,14 @@ class ShiftDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (context) =>
-              ShiftDetailsBloc(shiftId, context.read())
-                ..add(ShiftDetailsInitialized()),
-      child: ShiftDetailsView(),
+    return ErrorHandlerProvider(
+      child: BlocProvider(
+        create:
+            (context) =>
+                ShiftDetailsBloc(shiftId, context.read(), context.read())
+                  ..add(ShiftDetailsInitialized()),
+        child: ShiftDetailsView(),
+      ),
     );
   }
 }

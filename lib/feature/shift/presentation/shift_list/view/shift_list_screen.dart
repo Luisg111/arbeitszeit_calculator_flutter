@@ -1,3 +1,4 @@
+import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/error_handler.dart';
 import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/bloc/shift_list_event.dart';
 import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/view/date_selector.dart';
 import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/view/shift_list_entry.dart';
@@ -16,11 +17,14 @@ class ShiftListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create:
-          (context) =>
-              ShiftListBloc(context.read())..add(ShiftListInitialized()),
-      child: ShiftListView(),
+    return ErrorHandlerProvider(
+      child: BlocProvider(
+        create:
+            (context) =>
+                ShiftListBloc(context.read(), context.read())
+                  ..add(ShiftListInitialized()),
+        child: ShiftListView(),
+      ),
     );
   }
 }
