@@ -13,19 +13,23 @@ class ShiftListEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    return ListTile(
-      onTap: () {
-        if (shift.id != null) {
-          ShiftDetailsRoute(shift.id!).go(context);
-        }
-      },
-      tileColor: theme.colorScheme.primary,
-      textColor: theme.colorScheme.onPrimary,
-      title: Text(DateFormat.yMMMMd().format(shift.startDate)),
-      subtitle: Text(
-        "${DateFormat.Hm().format(shift.startDate)} - ${DateFormat.Hm().format(shift.endDate)}",
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: ListTile(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        onTap: () {
+          if (shift.id != null) {
+            ShiftDetailsRoute(shift.id!).go(context);
+          }
+        },
+        tileColor: theme.colorScheme.primary,
+        textColor: theme.colorScheme.onPrimary,
+        title: Text(DateFormat.yMMMMd().format(shift.startDate)),
+        subtitle: Text(
+          "${DateFormat.Hm().format(shift.startDate)} - ${DateFormat.Hm().format(shift.endDate)}",
+        ),
+        trailing: Text(shift.workTime.toHoursMinutes()),
       ),
-      trailing: Text(shift.workTime.toHoursMinutes()),
     );
   }
 }
