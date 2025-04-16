@@ -2,6 +2,8 @@ sealed class ShiftListEvent {}
 
 class ShiftListInitialized extends ShiftListEvent {}
 
+class ShiftListRefresh extends ShiftListEvent {}
+
 class ShiftListSelectedMonthChanged extends ShiftListEvent {
   final String newMonthInput;
 

@@ -4,6 +4,7 @@ import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_
 import 'package:arbeitszeit_calculator_flutter/navigation/app_navigation.dart';
 import 'package:arbeitszeit_calculator_flutter/widgets/app_bar.dart';
 
+import '../../../../../navigation/route_observer.dart';
 import '../bloc/shift_list_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,12 +25,27 @@ class ShiftListScreen extends StatelessWidget {
   }
 }
 
-class ShiftListView extends StatelessWidget {
+class ShiftListView extends StatefulWidget {
   const ShiftListView({super.key});
 
   @override
+  State<ShiftListView> createState() => _ShiftListViewState();
+}
+
+class _ShiftListViewState extends State<ShiftListView> with RouteAware {
+  late final ShiftListBloc bloc = context.read();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Subscribe to RouteObserver
+    ModalRoute.of(context)?.settings.name != null
+        ? routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute)
+        : null;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    ShiftListBloc bloc = context.read();
     return BlocBuilder<ShiftListBloc, ShiftListState>(
       builder: (context, state) {
         return Scaffold(
@@ -66,11 +82,25 @@ class ShiftListView extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 16),
-              for (var item in state.shifts) ShiftListEntry(shift: item),
+              if (state.isLoading)
+                Center(child: CircularProgressIndicator())
+              else
+                for (var item in state.shifts) ShiftListEntry(shift: item),
             ],
           ),
         );
       },
     );
+  }
+
+  @override
+  void didPopNext() {
+    bloc.add(ShiftListRefresh());
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
   }
 }

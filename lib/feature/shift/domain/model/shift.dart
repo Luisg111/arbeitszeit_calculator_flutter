@@ -17,6 +17,8 @@ class Shift extends Equatable {
     required this.breakTime,
   });
 
+  Duration get workTime => startDate.difference(endDate).abs() - breakTime;
+
   @override
   List<Object?> get props => [id, startDate, endDate, breakTime];
 }

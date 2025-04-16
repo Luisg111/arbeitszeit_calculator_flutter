@@ -27,6 +27,7 @@ extension $HomeRouteExtension on HomeRoute {
 }
 
 RouteBase get $shellRoute => ShellRouteData.$route(
+  observers: ShellRoute.$observers,
   factory: $ShellRouteExtension._fromState,
   routes: [
     GoRouteData.$route(

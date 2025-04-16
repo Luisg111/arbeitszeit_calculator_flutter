@@ -1,3 +1,4 @@
+import 'package:arbeitszeit_calculator_flutter/feature/shift/domain/util/duration_formatting.dart';
 import 'package:flutter/material.dart';
 
 class DurationSelector extends StatelessWidget {
@@ -23,7 +24,7 @@ class DurationSelector extends StatelessWidget {
 
   Widget buildDateText() {
     if (selectedDuration != null) {
-      return Text(selectedDuration.toString());
+      return Text(selectedDuration!.toHoursMinutes());
     } else {
       return Text("Pausendauer auswählen");
     }

@@ -81,7 +81,7 @@ class ShiftDetailsBloc extends Bloc<ShiftDetailsEvent, ShiftDetailsState> {
 
     emit(state.copyWith(isLoading: true));
     try {
-      _repository.deleteShift(state.shiftId!);
+      await _repository.deleteShift(state.shiftId!);
       emit(state.copyWith(closeScreen: true));
     } catch (e) {
       //TODO: add error handling

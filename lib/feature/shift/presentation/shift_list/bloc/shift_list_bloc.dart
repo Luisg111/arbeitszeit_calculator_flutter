@@ -13,6 +13,8 @@ class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
       switch (event) {
         case ShiftListInitialized _:
           await _initialize(emit);
+        case ShiftListRefresh _:
+          await _loadData(emit);
         case ShiftListSelectedYearChanged _:
           await _selectedYearChanged(event, emit);
         case ShiftListSelectedMonthChanged _:

@@ -62,7 +62,10 @@ class ShiftDetailsView extends StatelessWidget {
                 ),
             ],
           ),
-          body: buildBody(context, state),
+          body:
+              (state.isLoading)
+                  ? CircularProgressIndicator()
+                  : buildBody(context, state),
         );
       },
     );

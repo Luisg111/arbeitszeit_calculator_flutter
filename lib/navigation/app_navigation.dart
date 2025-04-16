@@ -1,3 +1,4 @@
+import 'package:arbeitszeit_calculator_flutter/navigation/route_observer.dart';
 import 'package:arbeitszeit_calculator_flutter/widgets/basic_page.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -32,6 +33,10 @@ class HomeRoute extends GoRouteData {
 )
 class ShellRoute extends ShellRouteData {
   const ShellRoute();
+
+  static final List<NavigatorObserver> $observers = <NavigatorObserver>[
+    routeObserver,
+  ];
 
   @override
   Widget builder(BuildContext context, GoRouterState state, Widget navigator) {

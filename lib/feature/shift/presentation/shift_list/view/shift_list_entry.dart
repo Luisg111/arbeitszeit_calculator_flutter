@@ -1,3 +1,4 @@
+import 'package:arbeitszeit_calculator_flutter/feature/shift/domain/util/duration_formatting.dart';
 import 'package:arbeitszeit_calculator_flutter/navigation/app_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -24,6 +25,7 @@ class ShiftListEntry extends StatelessWidget {
       subtitle: Text(
         "${DateFormat.Hm().format(shift.startDate)} - ${DateFormat.Hm().format(shift.endDate)}",
       ),
+      trailing: Text(shift.workTime.toHoursMinutes()),
     );
   }
 }
