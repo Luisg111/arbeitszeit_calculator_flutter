@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -25,11 +27,15 @@ class _DateSelectorState extends State<DateSelector> {
     text: widget.initialValue?.toString(),
   );
   final _focusNode = FocusNode();
+  Timer? _debounceTimer;
 
   @override
   void initState() {
     _textController.addListener(() {
-      widget.onValueChanged?.call(_textController.text);
+      _debounceTimer?.cancel();
+      _debounceTimer = Timer(Duration(milliseconds: 500),(){
+        widget.onValueChanged?.call(_textController.text);
+      });
     });
     super.initState();
   }
@@ -86,6 +92,7 @@ class _DateSelectorState extends State<DateSelector> {
   void dispose() {
     _textController.dispose();
     _focusNode.dispose();
+    _debounceTimer?.cancel();
     super.dispose();
   }
 }
