@@ -4,12 +4,12 @@ import 'package:intl/intl.dart';
 class DateTimeSelector extends StatelessWidget {
   const DateTimeSelector({
     super.key,
-    this.selectedDateTime,
+    this.value,
     this.onDateTimeChanged,
     required this.label,
   });
 
-  final DateTime? selectedDateTime;
+  final DateTime? value;
   final void Function(DateTime dateTime)? onDateTimeChanged;
 
   final String label;
@@ -22,32 +22,38 @@ class DateTimeSelector extends StatelessWidget {
           context: context,
           firstDate: DateTime(2000, 1, 1),
           lastDate: DateTime.now().add(Duration(days: 365)),
-          initialDate: selectedDateTime,
+          initialDate: value,
           initialEntryMode: DatePickerEntryMode.input,
         );
+
+        if (selectedDate == null) {
+          return;
+        }
 
         var selectedTime =
             context.mounted
                 ? await showTimePicker(
                   context: context,
                   initialTime: TimeOfDay.fromDateTime(
-                    selectedDateTime ?? DateTime.now(),
+                    value ?? DateTime.now(),
                   ),
                   initialEntryMode: TimePickerEntryMode.input,
                 )
                 : null;
 
-        if (selectedDate != null && selectedTime != null) {
-          onDateTimeChanged?.call(
-            DateTime(
-              selectedDate.year,
-              selectedDate.month,
-              selectedDate.day,
-              selectedTime.hour,
-              selectedTime.minute,
-            ),
-          );
+        if (selectedTime == null) {
+          return;
         }
+
+        onDateTimeChanged?.call(
+          DateTime(
+            selectedDate.year,
+            selectedDate.month,
+            selectedDate.day,
+            selectedTime.hour,
+            selectedTime.minute,
+          ),
+        );
       },
       child: InputDecorator(
         decoration: InputDecoration(label: Text(label)),
@@ -57,9 +63,9 @@ class DateTimeSelector extends StatelessWidget {
   }
 
   Widget buildDateText() {
-    if (selectedDateTime != null) {
+    if (value != null) {
       return Text(
-        "${DateFormat.yMMMMEEEEd().format(selectedDateTime!)} - ${DateFormat.Hm().format(selectedDateTime!)} Uhr",
+        "${DateFormat.yMMMMEEEEd().format(value!)} - ${DateFormat.Hm().format(value!)} Uhr",
       );
     } else {
       return Text("Datum auswählen");

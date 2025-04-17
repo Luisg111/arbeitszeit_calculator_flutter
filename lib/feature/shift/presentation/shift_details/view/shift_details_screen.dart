@@ -82,7 +82,7 @@ class ShiftDetailsView extends StatelessWidget {
         children: [
           DateTimeSelector(
             label: "Startzeitpunkt",
-            selectedDateTime: state.startDateTime,
+            value: state.startDateTime,
             onDateTimeChanged: (dateTime) {
               bloc.add(ShiftDetailsStartDateChanged(dateTime));
             },
@@ -90,7 +90,7 @@ class ShiftDetailsView extends StatelessWidget {
           SizedBox(height: 16),
           DateTimeSelector(
             label: "Endzeitpunkt",
-            selectedDateTime: state.endDateTime,
+            value: state.endDateTime,
             onDateTimeChanged: (dateTime) {
               bloc.add(ShiftDetailsEndDateChanged(dateTime));
             },

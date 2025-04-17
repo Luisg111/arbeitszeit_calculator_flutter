@@ -24,7 +24,7 @@ class ShiftListEntry extends StatelessWidget {
         },
         tileColor: theme.colorScheme.primary,
         textColor: theme.colorScheme.onPrimary,
-        title: Text(DateFormat.yMMMMd().format(shift.startDate)),
+        title: Text(DateFormat.yMMMEd().format(shift.startDate)),
         subtitle: Text(
           "${DateFormat.Hm().format(shift.startDate)} - ${DateFormat.Hm().format(shift.endDate)}",
         ),
