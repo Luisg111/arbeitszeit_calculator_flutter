@@ -19,6 +19,8 @@ abstract class _$ShiftListStateCWProxy {
 
   ShiftListState shifts(List<Shift> shifts);
 
+  ShiftListState totalWorkTime(Duration totalWorkTime);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `ShiftListState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -32,6 +34,7 @@ abstract class _$ShiftListStateCWProxy {
     int selectedYear,
     int selectedMonth,
     List<Shift> shifts,
+    Duration totalWorkTime,
   });
 }
 
@@ -64,6 +67,10 @@ class _$ShiftListStateCWProxyImpl implements _$ShiftListStateCWProxy {
   ShiftListState shifts(List<Shift> shifts) => this(shifts: shifts);
 
   @override
+  ShiftListState totalWorkTime(Duration totalWorkTime) =>
+      this(totalWorkTime: totalWorkTime);
+
+  @override
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `ShiftListState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -77,6 +84,7 @@ class _$ShiftListStateCWProxyImpl implements _$ShiftListStateCWProxy {
     Object? selectedYear = const $CopyWithPlaceholder(),
     Object? selectedMonth = const $CopyWithPlaceholder(),
     Object? shifts = const $CopyWithPlaceholder(),
+    Object? totalWorkTime = const $CopyWithPlaceholder(),
   }) {
     return ShiftListState(
       isLoading:
@@ -109,6 +117,11 @@ class _$ShiftListStateCWProxyImpl implements _$ShiftListStateCWProxy {
               ? _value.shifts
               // ignore: cast_nullable_to_non_nullable
               : shifts as List<Shift>,
+      totalWorkTime:
+          totalWorkTime == const $CopyWithPlaceholder()
+              ? _value.totalWorkTime
+              // ignore: cast_nullable_to_non_nullable
+              : totalWorkTime as Duration,
     );
   }
 }

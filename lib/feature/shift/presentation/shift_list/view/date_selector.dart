@@ -48,19 +48,32 @@ class _DateSelectorState extends State<DateSelector> {
           child: Center(
             child: Padding(
               padding: EdgeInsets.all(24),
-              child: EditableText(
-                focusNode: _focusNode,
-                controller: _textController,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  EditableText(
+                    focusNode: _focusNode,
+                    controller: _textController,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    ],
+                    keyboardType: TextInputType.number,
+                    style: theme.textTheme.headlineMedium!.copyWith(
+                      color: theme.colorScheme.onSecondary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    cursorColor: theme.colorScheme.onSecondary,
+                    backgroundCursorColor: theme.colorScheme.secondary,
+                  ),
+                  Text(
+                    widget.inputHelper,
+                    style: theme.textTheme.labelLarge!.copyWith(
+                      color: theme.colorScheme.onSecondary,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
                 ],
-                keyboardType: TextInputType.number,
-                style: theme.textTheme.headlineMedium!.copyWith(
-                  color: theme.colorScheme.onSecondary,
-                  fontWeight: FontWeight.bold,
-                ),
-                cursorColor: theme.colorScheme.onSecondary,
-                backgroundCursorColor: theme.colorScheme.secondary,
               ),
             ),
           ),

@@ -15,6 +15,7 @@ class ShiftListState extends Equatable {
   final bool selectedMonthValid;
 
   final List<Shift> shifts;
+  final Duration totalWorkTime;
 
   const ShiftListState({
     this.isLoading = false,
@@ -23,6 +24,7 @@ class ShiftListState extends Equatable {
     required this.selectedYear,
     required this.selectedMonth,
     required this.shifts,
+    required this.totalWorkTime,
   });
 
   factory ShiftListState.empty() {
@@ -33,6 +35,7 @@ class ShiftListState extends Equatable {
       selectedMonthValid: true,
       selectedYearValid: true,
       shifts: [],
+      totalWorkTime: Duration.zero,
     );
   }
 
@@ -48,5 +51,6 @@ class ShiftListState extends Equatable {
 
     selectedYearValid,
     shifts,
+    totalWorkTime,
   ];
 }

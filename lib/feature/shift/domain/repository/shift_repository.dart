@@ -12,6 +12,9 @@ class ShiftRepository {
 
   Future<Result<List<Shift>>> getShifts({int? year, int? month}) async {
     try {
+      assert(year == null || year > 0);
+      assert(month == null || (month >= 1 && month <= 12));
+
       var databaseResult = await _db.shiftDao.getShifts(year, month);
       return Result.ok(
         databaseResult.map((element) => element.toDto()).toList(),
@@ -33,6 +36,10 @@ class ShiftRepository {
   }
 
   Future<Result<int>> storeShift(Shift shift) async {
+    assert(shift.id != null);
+    assert(shift.endDate.isAfter(shift.startDate));
+    assert(!shift.workTime.isNegative);
+
     try {
       return Result.ok(
         await _db.shiftDao.createOrUpdateShift(shift.toCompanion()),
@@ -45,6 +52,19 @@ class ShiftRepository {
   Future<Result<int>> deleteShift(int shiftId) async {
     try {
       return Result.ok(await _db.shiftDao.deleteShift(shiftId));
+    } catch (e) {
+      return Result.failure(DatabaseUnknownException());
+    }
+  }
+
+  Future<Result<Duration>> getTotalWorktime(int year, int month) async {
+    assert( year > 0);
+    assert(month >= 1 && month <= 12);
+
+    try {
+      return Result.ok(
+        Duration(seconds: await _db.shiftDao.getWorktimeSeconds(year, month)),
+      );
     } catch (e) {
       return Result.failure(DatabaseUnknownException());
     }

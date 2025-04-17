@@ -34,19 +34,42 @@ class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
   Future<void> _loadData(Emitter<ShiftListState> emit) async {
     emit(state.copyWith(isLoading: true));
 
-    var databaseResponse = await _repository.getShifts(
+    List<Shift> newShifts = List.empty();
+    Duration newWorkTime = Duration.zero;
+
+    //get shifts
+    switch (await _repository.getShifts(
       year: state.selectedYear,
       month: state.selectedMonth,
-    );
-
-    switch (databaseResponse) {
-      case Ok<List<Shift>> _:
-        emit(state.copyWith(shifts: databaseResponse.value));
-      case Failure<List<Shift>> _:
-        _handler.handle(databaseResponse.error);
+    )) {
+      case Ok<List<Shift>> shiftResponse:
+        newShifts = shiftResponse.value;
+      case Failure<List<Shift>> shiftResponse:
+        _handler.handle(shiftResponse.error);
+        emit(state.copyWith(isLoading: false));
+        return;
     }
 
-    emit(state.copyWith(isLoading: false));
+    //get total worktime for month
+    switch (await _repository.getTotalWorktime(
+      state.selectedYear,
+      state.selectedMonth,
+    )) {
+      case Ok<Duration> response:
+        newWorkTime = response.value;
+      case Failure<Duration> response:
+        _handler.handle(response.error);
+        emit(state.copyWith(isLoading: false));
+        return;
+    }
+
+    emit(
+      state.copyWith(
+        shifts: newShifts,
+        totalWorkTime: newWorkTime,
+        isLoading: false,
+      ),
+    );
   }
 
   Future<void> _selectedYearChanged(
