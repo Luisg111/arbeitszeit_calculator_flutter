@@ -18,14 +18,13 @@ class ShiftDao extends DatabaseAccessor<Database> with _$ShiftDaoMixin {
   ///
   /// Returns a list of [ShiftTableData] that match the filter criteria.
   Future<List<ShiftTableData>> getShifts(int? year, int? month) async {
-    return (select(shiftTable)
-      ..where(
-            (row) =>
-        row.start.year.equalsExp(coalesce([Variable(year), row.start.year])) &
-        row.start.month.equalsExp(
-          coalesce([Variable(month), row.start.month]),
-        ),
-      )).get();
+    return (select(shiftTable)..where(
+      (row) =>
+          row.start.year.equalsExp(coalesce([Variable(year), row.start.year])) &
+          row.start.month.equalsExp(
+            coalesce([Variable(month), row.start.month]),
+          ),
+    )).get();
   }
 
   /// Returns a single shift by its ID.
@@ -54,8 +53,7 @@ class ShiftDao extends DatabaseAccessor<Database> with _$ShiftDaoMixin {
   ///
   /// Returns the number of affected rows (should be 1 or 0).
   Future<int> deleteShift(int id) async {
-    return (delete(shiftTable)
-      ..where((row) => row.id.equals(id))).go();
+    return (delete(shiftTable)..where((row) => row.id.equals(id))).go();
   }
 
   /// Calculates the total work time in seconds for a specific month.
@@ -69,18 +67,18 @@ class ShiftDao extends DatabaseAccessor<Database> with _$ShiftDaoMixin {
   /// Returns the total work time in seconds.
   Future<int> getWorktimeSeconds(int year, int month) async {
     final sumColumn =
-    ((shiftTable.end.unixepoch - shiftTable.start.unixepoch) -
-            shiftTable.breakTime)
-        .sum();
+        ((shiftTable.end.unixepoch - shiftTable.start.unixepoch) -
+                shiftTable.breakTime)
+            .sum();
 
     final monthYearColumn = (shiftTable.start.strftime("%m-%Y"));
 
     final result =
-    await (selectOnly(shiftTable)
-      ..addColumns([sumColumn, monthYearColumn])
-      ..groupBy([monthYearColumn]))
-        .getSingle();
+        await (selectOnly(shiftTable)
+              ..addColumns([sumColumn, monthYearColumn])
+              ..groupBy([monthYearColumn]))
+            .getSingleOrNull();
 
-    return result.read(sumColumn)!;
+    return result?.read(sumColumn) ?? 0;
   }
 }

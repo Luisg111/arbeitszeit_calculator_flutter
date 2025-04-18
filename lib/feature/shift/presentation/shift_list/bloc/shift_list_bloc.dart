@@ -7,7 +7,6 @@ import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_
 import "package:bloc/bloc.dart";
 
 class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
-
   ShiftListBloc(this._repository, this._handler)
     : super(ShiftListState.empty()) {
     on<ShiftListEvent>((event, emit) async {
@@ -20,9 +19,12 @@ class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
           await _selectedYearChanged(event, emit);
         case ShiftListSelectedMonthChanged _:
           await _selectedMonthChanged(event, emit);
+        case ShiftListItemDeleted _:
+          await _shiftDeleted(event, emit);
       }
     });
   }
+
   final ShiftRepository _repository;
   final ErrorHandler _handler;
 
@@ -30,8 +32,13 @@ class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
     await _loadData(emit);
   }
 
-  Future<void> _loadData(Emitter<ShiftListState> emit) async {
-    emit(state.copyWith(isLoading: true));
+  Future<void> _loadData(
+    Emitter<ShiftListState> emit, {
+    bool loadInBackground = false,
+  }) async {
+    if (!loadInBackground) {
+      emit(state.copyWith(isLoading: true));
+    }
 
     var newShifts = List<Shift>.empty();
     var newWorkTime = Duration.zero;
@@ -96,5 +103,29 @@ class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
     } else {
       emit(state.copyWith(selectedMonthValid: false));
     }
+  }
+
+  Future<void> _shiftDeleted(
+    ShiftListItemDeleted event,
+    Emitter<ShiftListState> emit,
+  ) async {
+    assert(
+      event.shift.id != null,
+      "Shift must have an id in order to be deleted!",
+    );
+
+    final oldItems = List.of(state.shifts);
+    emit(state.copyWith(shifts: state.shifts..remove(event.shift)));
+
+    final databaseResponse = await _repository.deleteShift(event.shift.id!);
+    switch (databaseResponse) {
+      case Ok<int> _:
+        break;
+      case Failure<int> _:
+        _handler.handle(databaseResponse.error);
+        emit(state.copyWith(shifts: oldItems));
+    }
+
+    await _loadData(emit, loadInBackground: true);
   }
 }

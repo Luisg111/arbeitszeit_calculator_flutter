@@ -4,6 +4,7 @@ import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_
 import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/bloc/shift_list_state.dart";
 import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/view/date_selector.dart";
 import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/view/shift_list_entry.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/util/delete_confirmation_dialog.dart";
 import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/util/duration_formatting.dart";
 import "package:arbeitszeit_calculator_flutter/navigation/app_navigation.dart";
 import "package:arbeitszeit_calculator_flutter/navigation/route_observer.dart";
@@ -60,55 +61,71 @@ class _ShiftListViewState extends State<ShiftListView> with RouteAware {
             },
           ),
           appBar: const CustomAppBar(title: "Schichtübersicht"),
-          body: ListView(
-            children: [
-              const SizedBox(height: 16),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  DateSelector(
-                    initialValue: state.selectedYear,
-                    isEntryValid: state.selectedYearValid,
-                    onValueChanged: (value) {
-                      bloc.add(ShiftListSelectedYearChanged(value));
-                    },
-                    inputHelper: "Jahr",
-                  ),
-                  DateSelector(
-                    initialValue: state.selectedMonth,
-                    isEntryValid: state.selectedMonthValid,
-                    onValueChanged: (value) {
-                      bloc.add(ShiftListSelectedMonthChanged(value));
-                    },
-                    inputHelper: "Monat",
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              if (state.isLoading)
-                const Center(child: CircularProgressIndicator())
-              else ...[
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Monatsarbeitszeit:",
-                        style: theme.textTheme.labelLarge,
-                      ),
-                      Expanded(
-                        child: Text(
-                          state.totalWorkTime.toHoursMinutes(),
-                          textAlign: TextAlign.end,
-                        ),
-                      ),
-                    ],
-                  ),
+          body: RefreshIndicator(
+            onRefresh: () {
+              bloc.add(ShiftListRefresh());
+              return bloc.stream.firstWhere((state) => !state.isLoading);
+            },
+            child: ListView(
+              children: [
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    DateSelector(
+                      initialValue: state.selectedYear,
+                      isEntryValid: state.selectedYearValid,
+                      onValueChanged: (value) {
+                        bloc.add(ShiftListSelectedYearChanged(value));
+                      },
+                      inputHelper: "Jahr",
+                    ),
+                    DateSelector(
+                      initialValue: state.selectedMonth,
+                      isEntryValid: state.selectedMonthValid,
+                      onValueChanged: (value) {
+                        bloc.add(ShiftListSelectedMonthChanged(value));
+                      },
+                      inputHelper: "Monat",
+                    ),
+                  ],
                 ),
-                for (final item in state.shifts) ShiftListEntry(shift: item),
+                const SizedBox(height: 16),
+                if (state.isLoading)
+                  const Center(child: CircularProgressIndicator())
+                else ...[
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Monatsarbeitszeit:",
+                          style: theme.textTheme.labelLarge,
+                        ),
+                        Expanded(
+                          child: Text(
+                            state.totalWorkTime.toHoursMinutes(),
+                            textAlign: TextAlign.end,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  for (final item in state.shifts)
+                    Dismissible(
+                      key: Key("Shift ${item.id!}"),
+                      child: ShiftListEntry(shift: item),
+                      confirmDismiss: (direction) async {
+                        return showDeleteConfirmDialog(context);
+                      },
+                      onDismissed: (direction) {
+                        bloc.add(ShiftListItemDeleted(item));
+                      },
+                    ),
+                ],
               ],
-            ],
+            ),
           ),
         );
       },

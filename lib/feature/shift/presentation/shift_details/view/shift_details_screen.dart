@@ -4,6 +4,7 @@ import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_
 import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/bloc/shift_details_state.dart";
 import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/view/date_time_selector.dart";
 import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/view/duration_selector.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/util/delete_confirmation_dialog.dart";
 import "package:arbeitszeit_calculator_flutter/navigation/app_navigation.dart";
 import "package:arbeitszeit_calculator_flutter/widgets/app_bar.dart";
 import "package:flutter/material.dart";
@@ -56,8 +57,10 @@ class ShiftDetailsView extends StatelessWidget {
             actions: [
               if (state.shiftId != null)
                 IconButton(
-                  onPressed: () {
-                    bloc.add(ShiftDetailsDeleteShift());
+                  onPressed: () async {
+                    if (await showDeleteConfirmDialog(context) ?? false) {
+                      bloc.add(ShiftDetailsDeleteShift());
+                    }
                   },
                   icon: const Icon(Icons.delete),
                 ),
