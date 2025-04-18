@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'feature/shift/presentation/error_handler.dart';
-import 'feature/shift/data/database.dart';
-import 'feature/shift/domain/repository/shift_repository.dart';
+import "package:arbeitszeit_calculator_flutter/feature/shift/data/database.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/domain/repository/shift_repository.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/error_handler.dart";
+import "package:flutter/material.dart";
+import "package:provider/provider.dart";
 
 class AppDependencies extends StatelessWidget {
-  const AppDependencies({super.key, required this.app});
+  const AppDependencies({required this.app, super.key});
 
   final Widget app;
 

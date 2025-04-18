@@ -1,14 +1,13 @@
-import 'package:arbeitszeit_calculator_flutter/feature/shift/data/shift_extensions.dart';
-import 'package:arbeitszeit_calculator_flutter/feature/shift/domain/exception/database_exception.dart';
-
-import '../../data/database.dart';
-import '../model/shift.dart';
-import '../model/result.dart';
+import "package:arbeitszeit_calculator_flutter/feature/shift/data/database.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/data/shift_extensions.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/domain/exception/database_exception.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/domain/model/result.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/domain/model/shift.dart";
 
 class ShiftRepository {
-  final Database _db;
-
   ShiftRepository({required Database db}) : _db = db;
+
+  final Database _db;
 
   /// Retrieves a list of shifts, optionally filtered by [year] and/or [month].
   ///
@@ -18,14 +17,20 @@ class ShiftRepository {
   /// or a failure result if an exception occurs.
   Future<Result<List<Shift>>> getShifts({int? year, int? month}) async {
     try {
-      assert(year == null || year > 0);
-      assert(month == null || (month >= 1 && month <= 12));
+      assert(
+        year == null || year > 0,
+        "year filter must be a valid year if present",
+      );
+      assert(
+        month == null || (month >= 1 && month <= 12),
+        "month filter must be a valid month (1 <= month <= 12) if present",
+      );
 
-      var databaseResult = await _db.shiftDao.getShifts(year, month);
+      final databaseResult = await _db.shiftDao.getShifts(year, month);
       return Result.ok(
         databaseResult.map((element) => element.toDto()).toList(),
       );
-    } catch (e) {
+    } on Exception {
       return Result.failure(DatabaseUnknownException());
     }
   }
@@ -36,11 +41,13 @@ class ShiftRepository {
   /// If the shift is not found, returns a [DatabaseEntryNotFound] failure.
   Future<Result<Shift>> getShift(int id) async {
     try {
-      var databaseResult = await _db.shiftDao.getShift(id);
-      return Result.ok(databaseResult.toDto());
-    } on StateError {
-      return Result.failure(DatabaseEntryNotFound());
-    } catch (e) {
+      final databaseResult = await _db.shiftDao.getShift(id);
+      if (databaseResult != null) {
+        return Result.ok(databaseResult.toDto());
+      } else {
+        return Result.failure(DatabaseEntryNotFound());
+      }
+    } on Exception {
       return Result.failure(DatabaseUnknownException());
     }
   }
@@ -52,15 +59,17 @@ class ShiftRepository {
   /// Returns a [Result] containing the ID of the stored shift on success
   /// or a failure result if an exception occurs.
   Future<Result<int>> storeShift(Shift shift) async {
-    assert(shift.id != null);
-    assert(shift.endDate.isAfter(shift.startDate));
-    assert(!shift.workTime.isNegative);
+    assert(
+      shift.endDate.isAfter(shift.startDate),
+      "shift end must be after shift start",
+    );
+    assert(!shift.workTime.isNegative, "shift work time must not be negative");
 
     try {
       return Result.ok(
         await _db.shiftDao.createOrUpdateShift(shift.toCompanion()),
       );
-    } catch (e) {
+    } on Exception {
       return Result.failure(DatabaseUnknownException());
     }
   }
@@ -72,7 +81,7 @@ class ShiftRepository {
   Future<Result<int>> deleteShift(int shiftId) async {
     try {
       return Result.ok(await _db.shiftDao.deleteShift(shiftId));
-    } catch (e) {
+    } on Exception {
       return Result.failure(DatabaseUnknownException());
     }
   }
@@ -82,14 +91,17 @@ class ShiftRepository {
   /// Returns a [Result] containing the total [Duration] of worktime on success
   /// or a failure result if an exception occurs.
   Future<Result<Duration>> getTotalWorktime(int year, int month) async {
-    assert( year > 0);
-    assert(month >= 1 && month <= 12);
+    assert(year > 0, "year filter must be a valid year");
+    assert(
+      month >= 1 && month <= 12,
+      "month filter must be a valid month (1 <= month <= 12)",
+    );
 
     try {
       return Result.ok(
         Duration(seconds: await _db.shiftDao.getWorktimeSeconds(year, month)),
       );
-    } catch (e) {
+    } on Exception {
       return Result.failure(DatabaseUnknownException());
     }
   }

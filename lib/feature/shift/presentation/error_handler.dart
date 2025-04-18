@@ -1,8 +1,8 @@
-import 'dart:async';
+import "dart:async";
 
-import 'package:arbeitszeit_calculator_flutter/feature/shift/domain/exception/database_exception.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import "package:arbeitszeit_calculator_flutter/feature/shift/domain/exception/database_exception.dart";
+import "package:flutter/material.dart";
+import "package:provider/provider.dart";
 
 class AppException {}
 
@@ -22,7 +22,7 @@ class ErrorHandler {
 }
 
 class ErrorHandlerProvider extends StatefulWidget {
-  const ErrorHandlerProvider({super.key, required this.child});
+  const ErrorHandlerProvider({required this.child, super.key});
 
   final Widget child;
 
@@ -35,14 +35,16 @@ class _ErrorHandlerProviderState extends State<ErrorHandlerProvider> {
 
   @override
   void initState() {
-    _handler.errorStream.listen((error) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(getErrorMessage(error))));
-      }
-    });
+    _handler.errorStream.listen(_showSnackbar);
     super.initState();
+  }
+
+  void _showSnackbar(AppException exception) {
+    if (context.mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(getErrorMessage(exception))));
+    }
   }
 
   @override
@@ -59,7 +61,7 @@ class _ErrorHandlerProviderState extends State<ErrorHandlerProvider> {
 
 String getErrorMessage(AppException exception) {
   switch (exception) {
-    case DatabaseException exception:
+    case final DatabaseException exception:
       return switch (exception) {
         DatabaseEntryNotFound() => "Datenbankeintrag nicht gefunden",
         DatabaseUnknownException() => "Unbekannter Fehler",

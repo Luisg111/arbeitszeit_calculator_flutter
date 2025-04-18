@@ -1,5 +1,5 @@
-import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/util/duration_formatting.dart';
-import 'package:flutter/material.dart';
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/util/duration_formatting.dart";
+import "package:flutter/material.dart";
 
 class DurationSelector extends StatelessWidget {
   const DurationSelector({
@@ -16,7 +16,7 @@ class DurationSelector extends StatelessWidget {
     return InkWell(
       onTap: () async {},
       child: InputDecorator(
-        decoration: InputDecoration(label: Text("Pause")),
+        decoration: const InputDecoration(label: Text("Pause")),
         child: buildDateText(),
       ),
     );
@@ -26,7 +26,7 @@ class DurationSelector extends StatelessWidget {
     if (selectedDuration != null) {
       return Text(selectedDuration!.toHoursMinutes());
     } else {
-      return Text("Pausendauer auswählen");
+      return const Text("Pausendauer auswählen");
     }
   }
 }

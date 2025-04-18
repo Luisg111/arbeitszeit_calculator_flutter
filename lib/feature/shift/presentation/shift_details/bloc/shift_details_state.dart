@@ -1,10 +1,31 @@
-import 'package:copy_with_extension/copy_with_extension.dart';
-import 'package:equatable/equatable.dart';
+import "package:copy_with_extension/copy_with_extension.dart";
+import "package:equatable/equatable.dart";
 
-part 'shift_details_state.g.dart';
+part "shift_details_state.g.dart";
 
 @CopyWith()
 class ShiftDetailsState extends Equatable {
+  const ShiftDetailsState({
+    required this.isLoading,
+    required this.shiftId,
+    required this.breakDuration,
+    required this.startDateTime,
+    required this.endDateTime,
+    required this.closeScreen,
+  });
+
+  factory ShiftDetailsState.empty() {
+    final dateTime = DateTime.now();
+    return ShiftDetailsState(
+      isLoading: false,
+      shiftId: null,
+      breakDuration: const Duration(hours: 1),
+      startDateTime: dateTime,
+      endDateTime: dateTime.add(const Duration(hours: 9)),
+      closeScreen: false,
+    );
+  }
+
   final bool isLoading;
   final bool closeScreen;
   final int? shiftId;
@@ -13,27 +34,6 @@ class ShiftDetailsState extends Equatable {
   final DateTime endDateTime;
 
   bool get isCreatingNewShift => shiftId == null;
-
-  const ShiftDetailsState(
-    this.isLoading,
-    this.shiftId,
-    this.breakDuration,
-    this.startDateTime,
-    this.endDateTime,
-    this.closeScreen,
-  );
-
-  factory ShiftDetailsState.empty() {
-    var dateTime = DateTime.now();
-    return ShiftDetailsState(
-      false,
-      null,
-      Duration(hours: 1),
-      dateTime,
-      dateTime.add(Duration(hours: 9)),
-      false,
-    );
-  }
 
   @override
   List<Object?> get props => [

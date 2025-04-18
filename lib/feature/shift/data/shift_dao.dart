@@ -1,6 +1,6 @@
-import 'package:arbeitszeit_calculator_flutter/feature/shift/data/database.dart';
-import 'package:arbeitszeit_calculator_flutter/feature/shift/data/shift_table.dart';
-import 'package:drift/drift.dart';
+import "package:arbeitszeit_calculator_flutter/feature/shift/data/database.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/data/shift_table.dart";
+import "package:drift/drift.dart";
 
 part "shift_dao.g.dart";
 
@@ -32,10 +32,11 @@ class ShiftDao extends DatabaseAccessor<Database> with _$ShiftDaoMixin {
   ///
   /// [id] – The ID of the shift to retrieve.
   ///
-  /// Returns a [ShiftTableData] object representing the shift.
-  Future<ShiftTableData> getShift(int id) async {
+  /// Returns a [ShiftTableData] object representing the shift
+  /// or null if no shift is found
+  Future<ShiftTableData?> getShift(int id) async {
     return (select(shiftTable)
-      ..where((row) => row.id.equals(id))).getSingle();
+      ..where((row) => row.id.equals(id))).getSingleOrNull();
   }
 
   /// Creates a new shift or updates an existing one if a conflict occurs (e.g., same ID).
@@ -74,7 +75,7 @@ class ShiftDao extends DatabaseAccessor<Database> with _$ShiftDaoMixin {
 
     final monthYearColumn = (shiftTable.start.strftime("%m-%Y"));
 
-    var result =
+    final result =
     await (selectOnly(shiftTable)
       ..addColumns([sumColumn, monthYearColumn])
       ..groupBy([monthYearColumn]))

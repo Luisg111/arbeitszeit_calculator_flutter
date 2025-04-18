@@ -1,4 +1,4 @@
-import 'package:drift/drift.dart';
+import "package:drift/drift.dart";
 
 class ShiftTable extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -10,7 +10,7 @@ class ShiftTable extends Table {
   IntColumn get breakTime => integer()();
 
   @override
-  String get tableName => 'shift';
+  String get tableName => "shift";
 }
 
 /* Equal SQL statement with testing data

@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final double height;
-  final String title;
-  final List<Widget> actions;
 
   const CustomAppBar({
     super.key,
@@ -11,6 +8,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title = "Arbeitszeit Calculator",
     this.actions = const [],
   });
+  final double height;
+  final String title;
+  final List<Widget> actions;
 
   @override
   Size get preferredSize => Size.fromHeight(height);

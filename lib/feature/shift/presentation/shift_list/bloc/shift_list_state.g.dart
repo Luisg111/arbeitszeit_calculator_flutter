@@ -7,8 +7,6 @@ part of 'shift_list_state.dart';
 // **************************************************************************
 
 abstract class _$ShiftListStateCWProxy {
-  ShiftListState isLoading(bool isLoading);
-
   ShiftListState selectedMonthValid(bool selectedMonthValid);
 
   ShiftListState selectedYearValid(bool selectedYearValid);
@@ -21,6 +19,8 @@ abstract class _$ShiftListStateCWProxy {
 
   ShiftListState totalWorkTime(Duration totalWorkTime);
 
+  ShiftListState isLoading(bool isLoading);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `ShiftListState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -28,13 +28,13 @@ abstract class _$ShiftListStateCWProxy {
   /// ShiftListState(...).copyWith(id: 12, name: "My name")
   /// ````
   ShiftListState call({
-    bool isLoading,
     bool selectedMonthValid,
     bool selectedYearValid,
     int selectedYear,
     int selectedMonth,
     List<Shift> shifts,
     Duration totalWorkTime,
+    bool isLoading,
   });
 }
 
@@ -43,9 +43,6 @@ class _$ShiftListStateCWProxyImpl implements _$ShiftListStateCWProxy {
   const _$ShiftListStateCWProxyImpl(this._value);
 
   final ShiftListState _value;
-
-  @override
-  ShiftListState isLoading(bool isLoading) => this(isLoading: isLoading);
 
   @override
   ShiftListState selectedMonthValid(bool selectedMonthValid) =>
@@ -71,6 +68,9 @@ class _$ShiftListStateCWProxyImpl implements _$ShiftListStateCWProxy {
       this(totalWorkTime: totalWorkTime);
 
   @override
+  ShiftListState isLoading(bool isLoading) => this(isLoading: isLoading);
+
+  @override
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `ShiftListState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -78,20 +78,15 @@ class _$ShiftListStateCWProxyImpl implements _$ShiftListStateCWProxy {
   /// ShiftListState(...).copyWith(id: 12, name: "My name")
   /// ````
   ShiftListState call({
-    Object? isLoading = const $CopyWithPlaceholder(),
     Object? selectedMonthValid = const $CopyWithPlaceholder(),
     Object? selectedYearValid = const $CopyWithPlaceholder(),
     Object? selectedYear = const $CopyWithPlaceholder(),
     Object? selectedMonth = const $CopyWithPlaceholder(),
     Object? shifts = const $CopyWithPlaceholder(),
     Object? totalWorkTime = const $CopyWithPlaceholder(),
+    Object? isLoading = const $CopyWithPlaceholder(),
   }) {
     return ShiftListState(
-      isLoading:
-          isLoading == const $CopyWithPlaceholder()
-              ? _value.isLoading
-              // ignore: cast_nullable_to_non_nullable
-              : isLoading as bool,
       selectedMonthValid:
           selectedMonthValid == const $CopyWithPlaceholder()
               ? _value.selectedMonthValid
@@ -122,6 +117,11 @@ class _$ShiftListStateCWProxyImpl implements _$ShiftListStateCWProxy {
               ? _value.totalWorkTime
               // ignore: cast_nullable_to_non_nullable
               : totalWorkTime as Duration,
+      isLoading:
+          isLoading == const $CopyWithPlaceholder()
+              ? _value.isLoading
+              // ignore: cast_nullable_to_non_nullable
+              : isLoading as bool,
     );
   }
 }

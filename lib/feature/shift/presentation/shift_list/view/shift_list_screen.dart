@@ -1,17 +1,15 @@
-import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/error_handler.dart';
-import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/bloc/shift_list_event.dart';
-import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/view/date_selector.dart';
-import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/view/shift_list_entry.dart';
-import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/util/duration_formatting.dart';
-import 'package:arbeitszeit_calculator_flutter/navigation/app_navigation.dart';
-import 'package:arbeitszeit_calculator_flutter/widgets/app_bar.dart';
-
-import '../../../../../navigation/route_observer.dart';
-import '../bloc/shift_list_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../bloc/shift_list_state.dart';
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/error_handler.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/bloc/shift_list_bloc.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/bloc/shift_list_event.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/bloc/shift_list_state.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/view/date_selector.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/view/shift_list_entry.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/util/duration_formatting.dart";
+import "package:arbeitszeit_calculator_flutter/navigation/app_navigation.dart";
+import "package:arbeitszeit_calculator_flutter/navigation/route_observer.dart";
+import "package:arbeitszeit_calculator_flutter/widgets/app_bar.dart";
+import "package:flutter/material.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 
 class ShiftListScreen extends StatelessWidget {
   const ShiftListScreen({super.key});
@@ -24,7 +22,7 @@ class ShiftListScreen extends StatelessWidget {
             (context) =>
                 ShiftListBloc(context.read(), context.read())
                   ..add(ShiftListInitialized()),
-        child: ShiftListView(),
+        child: const ShiftListView(),
       ),
     );
   }
@@ -44,27 +42,27 @@ class _ShiftListViewState extends State<ShiftListView> with RouteAware {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Subscribe to RouteObserver
-    ModalRoute.of(context)?.settings.name != null
-        ? routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute)
-        : null;
+    if (ModalRoute.of(context)?.settings.name != null) {
+      routeObserver.subscribe(this, ModalRoute.of(context)! as PageRoute);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ShiftListBloc, ShiftListState>(
       builder: (context, state) {
-        var theme = Theme.of(context);
+        final theme = Theme.of(context);
         return Scaffold(
           floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
             onPressed: () {
-              ShiftCreateRoute().go(context);
+              const ShiftCreateRoute().go(context);
             },
           ),
-          appBar: CustomAppBar(title: "Schichtübersicht"),
+          appBar: const CustomAppBar(title: "Schichtübersicht"),
           body: ListView(
             children: [
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -87,12 +85,12 @@ class _ShiftListViewState extends State<ShiftListView> with RouteAware {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               if (state.isLoading)
-                Center(child: CircularProgressIndicator())
+                const Center(child: CircularProgressIndicator())
               else ...[
                 Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
                       Text(
@@ -108,7 +106,7 @@ class _ShiftListViewState extends State<ShiftListView> with RouteAware {
                     ],
                   ),
                 ),
-                for (var item in state.shifts) ShiftListEntry(shift: item),
+                for (final item in state.shifts) ShiftListEntry(shift: item),
               ],
             ],
           ),

@@ -1,16 +1,14 @@
-import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/error_handler.dart';
-import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/bloc/shift_details_event.dart';
-import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/view/date_time_selector.dart';
-import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/view/duration_selector.dart';
-import 'package:arbeitszeit_calculator_flutter/navigation/app_navigation.dart';
-import 'package:go_router/go_router.dart';
-
-import '../../../../../widgets/app_bar.dart';
-import '../bloc/shift_details_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../bloc/shift_details_state.dart';
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/error_handler.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/bloc/shift_details_bloc.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/bloc/shift_details_event.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/bloc/shift_details_state.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/view/date_time_selector.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/view/duration_selector.dart";
+import "package:arbeitszeit_calculator_flutter/navigation/app_navigation.dart";
+import "package:arbeitszeit_calculator_flutter/widgets/app_bar.dart";
+import "package:flutter/material.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
+import "package:go_router/go_router.dart";
 
 class ShiftDetailsScreen extends StatelessWidget {
   const ShiftDetailsScreen({super.key, this.shiftId});
@@ -25,7 +23,7 @@ class ShiftDetailsScreen extends StatelessWidget {
             (context) =>
                 ShiftDetailsBloc(shiftId, context.read(), context.read())
                   ..add(ShiftDetailsInitialized()),
-        child: ShiftDetailsView(),
+        child: const ShiftDetailsView(),
       ),
     );
   }
@@ -36,17 +34,17 @@ class ShiftDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ShiftDetailsBloc bloc = context.read();
+    final bloc = context.read<ShiftDetailsBloc>();
     return BlocConsumer<ShiftDetailsBloc, ShiftDetailsState>(
       listener: (context, state) {
         if (context.canPop()) {
           context.pop();
         } else {
-          ShiftListRoute().go(context);
+          const ShiftListRoute().go(context);
         }
       },
       listenWhen: (oldState, newState) {
-        return oldState.closeScreen == false && newState.closeScreen == true;
+        return !oldState.closeScreen && newState.closeScreen;
       },
       builder: (context, state) {
         return Scaffold(
@@ -61,13 +59,13 @@ class ShiftDetailsView extends StatelessWidget {
                   onPressed: () {
                     bloc.add(ShiftDetailsDeleteShift());
                   },
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                 ),
             ],
           ),
           body:
               (state.isLoading)
-                  ? CircularProgressIndicator()
+                  ? const Center(child: CircularProgressIndicator())
                   : buildBody(context, state),
         );
       },
@@ -75,7 +73,7 @@ class ShiftDetailsView extends StatelessWidget {
   }
 
   Widget buildBody(BuildContext context, ShiftDetailsState state) {
-    ShiftDetailsBloc bloc = context.read();
+    final bloc = context.read<ShiftDetailsBloc>();
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListView(
@@ -87,7 +85,7 @@ class ShiftDetailsView extends StatelessWidget {
               bloc.add(ShiftDetailsStartDateChanged(dateTime));
             },
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           DateTimeSelector(
             label: "Endzeitpunkt",
             value: state.endDateTime,
@@ -95,19 +93,19 @@ class ShiftDetailsView extends StatelessWidget {
               bloc.add(ShiftDetailsEndDateChanged(dateTime));
             },
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           DurationSelector(
             selectedDuration: state.breakDuration,
             onDurationChanged: (duration) {
               bloc.add(ShiftDetailsDurationChanged(duration));
             },
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
               bloc.add(ShiftDetailsStoreShift());
             },
-            child: Text("Speichern"),
+            child: const Text("Speichern"),
           ),
         ],
       ),

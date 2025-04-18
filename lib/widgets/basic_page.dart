@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 class BasicPage extends StatelessWidget {
-  const BasicPage({super.key, required this.child});
+  const BasicPage({required this.child, super.key});
 
   final Widget child;
 

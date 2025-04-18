@@ -1,17 +1,12 @@
-import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/error_handler.dart';
-import 'package:arbeitszeit_calculator_flutter/feature/shift/domain/repository/shift_repository.dart';
-import 'package:bloc/bloc.dart';
-
-import '../../../domain/model/result.dart';
-import '../../../domain/model/shift.dart';
-import 'shift_details_event.dart';
-import 'shift_details_state.dart';
+import "package:arbeitszeit_calculator_flutter/feature/shift/domain/model/result.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/domain/model/shift.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/domain/repository/shift_repository.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/error_handler.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/bloc/shift_details_event.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_details/bloc/shift_details_state.dart";
+import "package:bloc/bloc.dart";
 
 class ShiftDetailsBloc extends Bloc<ShiftDetailsEvent, ShiftDetailsState> {
-  final int? _initialId;
-  final ShiftRepository _repository;
-  final ErrorHandler _handler;
-
   ShiftDetailsBloc(this._initialId, this._repository, this._handler)
     : super(ShiftDetailsState.empty()) {
     on<ShiftDetailsEvent>((event, emit) async {
@@ -30,6 +25,10 @@ class ShiftDetailsBloc extends Bloc<ShiftDetailsEvent, ShiftDetailsState> {
     });
   }
 
+  final int? _initialId;
+  final ShiftRepository _repository;
+  final ErrorHandler _handler;
+
   Future<void> _initialize(Emitter<ShiftDetailsState> emit) async {
     if (_initialId != null) {
       emit(state.copyWith(shiftId: _initialId));
@@ -38,13 +37,11 @@ class ShiftDetailsBloc extends Bloc<ShiftDetailsEvent, ShiftDetailsState> {
   }
 
   Future<void> _loadShiftData(Emitter<ShiftDetailsState> emit) async {
-    if (state.shiftId == null) {
-      return;
-    }
+    assert(state.shiftId != null,"Shift id must not be null when loading shift");
 
     emit(state.copyWith(isLoading: true));
 
-    var databaseResponse = await _repository.getShift(state.shiftId!);
+    final databaseResponse = await _repository.getShift(state.shiftId!);
     switch (databaseResponse) {
       case Ok<Shift> _:
         emit(
@@ -68,14 +65,14 @@ class ShiftDetailsBloc extends Bloc<ShiftDetailsEvent, ShiftDetailsState> {
   Future<void> _storeShiftData(Emitter<ShiftDetailsState> emit) async {
     emit(state.copyWith(isLoading: true));
 
-    var shift = Shift(
+    final shift = Shift(
       id: state.shiftId,
       breakTime: state.breakDuration,
       startDate: state.startDateTime,
       endDate: state.endDateTime,
     );
 
-    var databaseResponse = await _repository.storeShift(shift);
+    final databaseResponse = await _repository.storeShift(shift);
     switch (databaseResponse) {
       case Ok<int> _:
         emit(
@@ -95,7 +92,7 @@ class ShiftDetailsBloc extends Bloc<ShiftDetailsEvent, ShiftDetailsState> {
 
     emit(state.copyWith(isLoading: true));
 
-    var databaseResponse = await _repository.deleteShift(state.shiftId!);
+    final databaseResponse = await _repository.deleteShift(state.shiftId!);
     switch (databaseResponse) {
       case Ok<int> _:
         emit(state.copyWith(closeScreen: true));

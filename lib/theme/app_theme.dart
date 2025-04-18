@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 ThemeData getAppTheme(BuildContext context) {
-  var colorScheme = getAppColorScheme();
+  final colorScheme = getAppColorScheme();
   return ThemeData.from(colorScheme: colorScheme, useMaterial3: true).copyWith(
     appBarTheme: AppBarTheme(
       backgroundColor: colorScheme.primary,

@@ -1,6 +1,6 @@
-import '../bloc/shift_ical_import_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_ical_import/bloc/shift_ical_import_bloc.dart";
+import "package:flutter/material.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 
 class ShiftIcalImportScreen extends StatelessWidget {
   const ShiftIcalImportScreen({super.key});
@@ -9,7 +9,7 @@ class ShiftIcalImportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ShiftIcalImportBloc(),
-      child: ShiftIcalImportView(),
+      child: const ShiftIcalImportView(),
     );
   }
 }

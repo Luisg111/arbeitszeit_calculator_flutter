@@ -1,6 +1,6 @@
-import 'package:arbeitszeit_calculator_flutter/feature/shift/data/database.dart';
-import 'package:arbeitszeit_calculator_flutter/feature/shift/domain/model/shift.dart';
-import 'package:drift/drift.dart';
+import "package:arbeitszeit_calculator_flutter/feature/shift/data/database.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/domain/model/shift.dart";
+import "package:drift/drift.dart";
 
 extension ShiftToDatabase on Shift {
   ShiftTableCompanion toCompanion() {

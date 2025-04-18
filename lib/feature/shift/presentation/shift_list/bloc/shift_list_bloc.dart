@@ -1,15 +1,12 @@
-import 'package:arbeitszeit_calculator_flutter/feature/shift/presentation/error_handler.dart';
-import 'package:arbeitszeit_calculator_flutter/feature/shift/domain/model/result.dart';
-import 'package:arbeitszeit_calculator_flutter/feature/shift/domain/repository/shift_repository.dart';
-import 'package:bloc/bloc.dart';
-
-import '../../../domain/model/shift.dart';
-import 'shift_list_event.dart';
-import 'shift_list_state.dart';
+import "package:arbeitszeit_calculator_flutter/feature/shift/domain/model/result.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/domain/model/shift.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/domain/repository/shift_repository.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/error_handler.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/bloc/shift_list_event.dart";
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/shift_list/bloc/shift_list_state.dart";
+import "package:bloc/bloc.dart";
 
 class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
-  final ShiftRepository _repository;
-  final ErrorHandler _handler;
 
   ShiftListBloc(this._repository, this._handler)
     : super(ShiftListState.empty()) {
@@ -26,6 +23,8 @@ class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
       }
     });
   }
+  final ShiftRepository _repository;
+  final ErrorHandler _handler;
 
   Future<void> _initialize(Emitter<ShiftListState> emit) async {
     await _loadData(emit);
@@ -34,17 +33,17 @@ class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
   Future<void> _loadData(Emitter<ShiftListState> emit) async {
     emit(state.copyWith(isLoading: true));
 
-    List<Shift> newShifts = List.empty();
-    Duration newWorkTime = Duration.zero;
+    var newShifts = List<Shift>.empty();
+    var newWorkTime = Duration.zero;
 
     //get shifts
     switch (await _repository.getShifts(
       year: state.selectedYear,
       month: state.selectedMonth,
     )) {
-      case Ok<List<Shift>> shiftResponse:
+      case final Ok<List<Shift>> shiftResponse:
         newShifts = shiftResponse.value;
-      case Failure<List<Shift>> shiftResponse:
+      case final Failure<List<Shift>> shiftResponse:
         _handler.handle(shiftResponse.error);
         emit(state.copyWith(isLoading: false));
         return;
@@ -55,9 +54,9 @@ class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
       state.selectedYear,
       state.selectedMonth,
     )) {
-      case Ok<Duration> response:
+      case final Ok<Duration> response:
         newWorkTime = response.value;
-      case Failure<Duration> response:
+      case final Failure<Duration> response:
         _handler.handle(response.error);
         emit(state.copyWith(isLoading: false));
         return;
@@ -76,7 +75,7 @@ class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
     ShiftListSelectedYearChanged event,
     Emitter<ShiftListState> emit,
   ) async {
-    var year = int.tryParse(event.newYearInput);
+    final year = int.tryParse(event.newYearInput);
     if (year != null && year > 0) {
       emit(state.copyWith(selectedYear: year, selectedYearValid: true));
       await _loadData(emit);
@@ -90,7 +89,7 @@ class ShiftListBloc extends Bloc<ShiftListEvent, ShiftListState> {
     Emitter<ShiftListState> emit,
   ) async {
     //print("month changed!");
-    var month = int.tryParse(event.newMonthInput);
+    final month = int.tryParse(event.newMonthInput);
     if (month != null && month >= 1 && month <= 12) {
       emit(state.copyWith(selectedMonth: month, selectedMonthValid: true));
       await _loadData(emit);

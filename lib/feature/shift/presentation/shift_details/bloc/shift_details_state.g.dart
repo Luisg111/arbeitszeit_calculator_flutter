@@ -79,30 +79,36 @@ class _$ShiftDetailsStateCWProxyImpl implements _$ShiftDetailsStateCWProxy {
     Object? closeScreen = const $CopyWithPlaceholder(),
   }) {
     return ShiftDetailsState(
-      isLoading == const $CopyWithPlaceholder()
-          ? _value.isLoading
-          // ignore: cast_nullable_to_non_nullable
-          : isLoading as bool,
-      shiftId == const $CopyWithPlaceholder()
-          ? _value.shiftId
-          // ignore: cast_nullable_to_non_nullable
-          : shiftId as int?,
-      breakDuration == const $CopyWithPlaceholder()
-          ? _value.breakDuration
-          // ignore: cast_nullable_to_non_nullable
-          : breakDuration as Duration,
-      startDateTime == const $CopyWithPlaceholder()
-          ? _value.startDateTime
-          // ignore: cast_nullable_to_non_nullable
-          : startDateTime as DateTime,
-      endDateTime == const $CopyWithPlaceholder()
-          ? _value.endDateTime
-          // ignore: cast_nullable_to_non_nullable
-          : endDateTime as DateTime,
-      closeScreen == const $CopyWithPlaceholder()
-          ? _value.closeScreen
-          // ignore: cast_nullable_to_non_nullable
-          : closeScreen as bool,
+      isLoading:
+          isLoading == const $CopyWithPlaceholder()
+              ? _value.isLoading
+              // ignore: cast_nullable_to_non_nullable
+              : isLoading as bool,
+      shiftId:
+          shiftId == const $CopyWithPlaceholder()
+              ? _value.shiftId
+              // ignore: cast_nullable_to_non_nullable
+              : shiftId as int?,
+      breakDuration:
+          breakDuration == const $CopyWithPlaceholder()
+              ? _value.breakDuration
+              // ignore: cast_nullable_to_non_nullable
+              : breakDuration as Duration,
+      startDateTime:
+          startDateTime == const $CopyWithPlaceholder()
+              ? _value.startDateTime
+              // ignore: cast_nullable_to_non_nullable
+              : startDateTime as DateTime,
+      endDateTime:
+          endDateTime == const $CopyWithPlaceholder()
+              ? _value.endDateTime
+              // ignore: cast_nullable_to_non_nullable
+              : endDateTime as DateTime,
+      closeScreen:
+          closeScreen == const $CopyWithPlaceholder()
+              ? _value.closeScreen
+              // ignore: cast_nullable_to_non_nullable
+              : closeScreen as bool,
     );
   }
 }

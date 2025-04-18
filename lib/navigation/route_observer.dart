@@ -1,3 +1,3 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
-final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();

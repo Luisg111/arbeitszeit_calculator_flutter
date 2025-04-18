@@ -1,5 +1,5 @@
 
-import '../../presentation/error_handler.dart';
+import "package:arbeitszeit_calculator_flutter/feature/shift/presentation/error_handler.dart";
 
 /// Utility class that simplifies handling errors.
 ///

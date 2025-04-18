@@ -5,13 +5,13 @@ class ShiftListInitialized extends ShiftListEvent {}
 class ShiftListRefresh extends ShiftListEvent {}
 
 class ShiftListSelectedMonthChanged extends ShiftListEvent {
-  final String newMonthInput;
 
   ShiftListSelectedMonthChanged(this.newMonthInput);
+  final String newMonthInput;
 }
 
 class ShiftListSelectedYearChanged extends ShiftListEvent {
-  final String newYearInput;
 
   ShiftListSelectedYearChanged(this.newYearInput);
+  final String newYearInput;
 }
